@@ -1,0 +1,15 @@
+.git
+.venv*
+.env
+data
+credentials
+backups
+.pytest_cache
+.ruff_cache
+__pycache__
+dist
+build
+*.egg-info
+node_modules
+**/node_modules
+**/dist

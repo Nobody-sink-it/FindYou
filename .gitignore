@@ -1,0 +1,23 @@
+.venv*/
+.env
+.env.*
+!.env.example
+data/
+credentials/
+backups/
+*.db
+*.db-*
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
+
+# Local design iterations and account-specific validation records
+docs/design/
+docs/AGENT_BACKEND_PROGRESS_*.md
+docs/LIVE_DEEPSEEK_BILI_TEST.md

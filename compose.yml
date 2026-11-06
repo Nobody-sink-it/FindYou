@@ -1,0 +1,34 @@
+services:
+  api:
+    build: .
+    image: findyou:0.1.0
+    env_file: .env
+    environment:
+      FINDYOU_DATA_DIR: /app/data
+      FINDYOU_BILI_PYTHON: /opt/bili/bin/python
+    ports:
+      - "127.0.0.1:8765:8765"
+    volumes:
+      - findyou-data:/app/data
+    command: ["sh", "-c", "findyou init-db && exec uvicorn findyou.api:app_factory --factory --host 0.0.0.0 --port 8765 --no-access-log"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/health/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  worker:
+    image: findyou:0.1.0
+    env_file: .env
+    environment:
+      FINDYOU_DATA_DIR: /app/data
+      FINDYOU_BILI_PYTHON: /opt/bili/bin/python
+    volumes:
+      - findyou-data:/app/data
+    command: ["findyou", "worker"]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  findyou-data:
